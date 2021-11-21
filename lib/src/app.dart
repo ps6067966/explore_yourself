@@ -35,7 +35,7 @@ class _MyAppState extends State<MyApp> {
   initializeSharedPreferences() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     setState(() {
-      isSeenOnBoard = prefs.getBool('seenOnBoard') ?? false;
+      isSeenOnBoard = prefs.getBool('isSeenOnboard') ?? false;
     });
   }
 

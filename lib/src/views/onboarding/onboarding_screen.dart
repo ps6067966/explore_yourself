@@ -1,3 +1,5 @@
+import 'package:shared_preferences/shared_preferences.dart';
+
 import '../../interface/onboarding.dart';
 import 'package:flutter/material.dart';
 import '../../responsive/size_config.dart';
@@ -17,6 +19,12 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
   final PageController _pageController = PageController(
     initialPage: 0,
   );
+
+  Future setSeenOnboard() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setBool('isSeenOnboard', true);
+  }
+
   AnimatedContainer dotIndicator(int index) {
     return AnimatedContainer(
       duration: const Duration(milliseconds: 400),
@@ -28,6 +36,12 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
         shape: BoxShape.circle,
       ),
     );
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    setSeenOnboard();
   }
 
   @override
@@ -96,15 +110,18 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                           onPressedCallback: () {
                             Navigator.restorablePushNamed(context, '/signup');
                           },
-                        bgColor: Colors.green,
+                          bgColor: Colors.green,
                         ),
-                        )
+                      )
                     : Row(
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [
-                          OnBoardNavBtn(name: 'Skip', onPressedCallback: () {
-                            Navigator.restorablePushNamed(context, '/signup');
-                          }),
+                          OnBoardNavBtn(
+                              name: 'Skip',
+                              onPressedCallback: () {
+                                Navigator.restorablePushNamed(
+                                    context, '/signup');
+                              }),
                           Row(
                             children: List.generate(onBoardingContents.length,
                                 (index) => dotIndicator(index)),
@@ -128,5 +145,3 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
     );
   }
 }
-
-
