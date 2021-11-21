@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'sample_feature/sample_item_details_view.dart';
 import 'sample_feature/sample_item_list_view.dart';
@@ -9,8 +10,10 @@ import 'settings/settings_view.dart';
 import 'views/auth/sign_up_screen.dart';
 import 'views/onboarding/onboarding_screen.dart';
 
+bool? isSeenOnBoard;
+
 /// The Widget that configures your application.
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({
     Key? key,
     required this.settingsController,
@@ -19,13 +22,31 @@ class MyApp extends StatelessWidget {
   final SettingsController settingsController;
 
   @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  @override
+  void initState() {
+    super.initState();
+    initializeSharedPreferences();
+  }
+
+  initializeSharedPreferences() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      isSeenOnBoard = prefs.getBool('seenOnBoard') ?? false;
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     // Glue the SettingsController to the MaterialApp.
     //
     // The AnimatedBuilder Widget listens to the SettingsController for changes.
     // Whenever the user updates their settings, the MaterialApp is rebuilt.
     return AnimatedBuilder(
-      animation: settingsController,
+      animation: widget.settingsController,
       builder: (BuildContext context, Widget? child) {
         return MaterialApp(
           title: 'XplorU',
@@ -63,7 +84,7 @@ class MyApp extends StatelessWidget {
           // SettingsController to display the correct theme.
           theme: ThemeData(),
           darkTheme: ThemeData.dark(),
-          themeMode: settingsController.themeMode,
+          themeMode: widget.settingsController.themeMode,
 
           // Define a function to handle named routes in order to support
           // Flutter web url navigation and deep linking.
@@ -73,14 +94,16 @@ class MyApp extends StatelessWidget {
               builder: (BuildContext context) {
                 switch (routeSettings.name) {
                   case SettingsView.routeName:
-                    return SettingsView(controller: settingsController);
+                    return SettingsView(controller: widget.settingsController);
                   case SignUpScreen.routeName:
                     return const SignUpScreen();
                   case SampleItemDetailsView.routeName:
                     return const SampleItemDetailsView();
                   case SampleItemListView.routeName:
                   default:
-                    return const OnBoardingScreen();
+                    return isSeenOnBoard!
+                        ? const SignUpScreen()
+                        : const OnBoardingScreen();
                 }
               },
             );
