@@ -12,16 +12,16 @@ List<OnBoarding> onBoardingContents = [
   OnBoarding(
     title: "Welcome to the app",
     description: "This is a description",
-    image: "assets/images/onboarding0.png",
+    image: "assets/images/onboarding0.gif",
   ),
   OnBoarding(
     title: "Welcome to the app",
     description: "This is a description",
-    image: "assets/images/onboarding1.png",
+    image: "assets/images/onboarding1.gif",
   ),
   OnBoarding(
     title: "Welcome to the app",
     description: "This is a description",
-    image: "assets/images/onboarding2.png",
+    image: "assets/images/onboarding2.gif",
   ),
 ];
