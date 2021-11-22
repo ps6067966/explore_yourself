@@ -8,7 +8,7 @@ import 'sample_feature/sample_item_list_view.dart';
 import 'settings/settings_controller.dart';
 import 'settings/settings_view.dart';
 import 'views/auth/sign_up_screen.dart';
-import 'views/onboarding/onboarding_screen.dart';
+import 'views/home/homescreen.dart';
 
 bool? isSeenOnBoard;
 
@@ -101,9 +101,10 @@ class _MyAppState extends State<MyApp> {
                     return const SampleItemDetailsView();
                   case SampleItemListView.routeName:
                   default:
-                    return isSeenOnBoard!
-                        ? const SignUpScreen()
-                        : const OnBoardingScreen();
+                    return const HomeScreen();
+                  // return isSeenOnBoard!
+                  //     ? const SignUpScreen()
+                  //     : const OnBoardingScreen();
                 }
               },
             );
