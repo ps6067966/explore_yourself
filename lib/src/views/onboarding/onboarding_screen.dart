@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import '../../responsive/size_config.dart';
 import 'custom_txt_btn.dart';
 import 'onboard_nav_btn.dart';
+import 'onboard_title_img_screen_part.dart';
 
 class OnBoardingScreen extends StatefulWidget {
   const OnBoardingScreen({Key? key}) : super(key: key);
@@ -48,7 +49,6 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
   Widget build(BuildContext context) {
     // Initialize size configure
     SizeConfig().init(context);
-    double sizeH = SizeConfig.blockSizeH!;
     double sizeV = SizeConfig.blockSizeV!;
 
     // Onboarding Screen Starts from here
@@ -57,47 +57,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
       body: SafeArea(
           child: Column(
         children: [
-          Expanded(
-            flex: 9,
-            child: PageView.builder(
-                controller: _pageController,
-                onPageChanged: (value) {
-                  setState(() {
-                    currentPageIndex = value;
-                  });
-                },
-                itemCount: onBoardingContents.length,
-                itemBuilder: (ctx, index) {
-                  return Column(
-                    children: [
-                      SizedBox(
-                        height: sizeV * 5,
-                      ),
-                      Text(
-                        onBoardingContents[index].title,
-                        style: TextStyle(
-                            fontSize: sizeH * 5,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.black),
-                      ),
-                      SizedBox(
-                        height: sizeV * 5,
-                      ),
-                      SizedBox(
-                        height: sizeV * 50,
-                        child: Image.asset(
-                          onBoardingContents[index].image,
-                          fit: BoxFit.contain,
-                        ),
-                      ),
-                      SizedBox(
-                        height: sizeV * 5,
-                      ),
-                      const Text('Description')
-                    ],
-                  );
-                }),
-          ),
+          OnBoardTitleAndImageScreenPart(pageController: _pageController, currentPageIndex: currentPageIndex),
           Expanded(
             flex: 1,
             child: Column(
